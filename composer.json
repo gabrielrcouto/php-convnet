@@ -1,0 +1,23 @@
+{
+    "name": "gabrielrcouto/php-convnet",
+    "description": "Pure PHP Convolutional Neural Network",
+    "keywords": ["php","cnn","convnet","convolutional", "neural network"],
+    "homepage": "http://github.com/gabrielrcouto/php-convnet",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Gabriel Rodrigues Couto",
+            "email": "gabrielrcouto@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0"
+    },
+    "require-dev" : {
+    },
+    "autoload": {
+        "psr-4": {
+            "ConvNet\\": "src/"
+        }
+    }
+}
