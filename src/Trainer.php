@@ -77,12 +77,12 @@ class Trainer
                 // adagrad needs gsum
                 // adam and adadelta needs gsum and xsum
                 for ($i = 0; $i < count($pglist); $i++) {
-                    array_push($this->gsum[], array_fill(0, count($pglist[$i]['params']), 0));
+                    $this->gsum[] = array_fill(0, count($pglist[$i]['params']), 0);
 
                     if ($this->method === 'adam' || $this->method === 'adadelta') {
-                        array_push($this->xsum[], array_fill(0, count($pglist[$i]['params']), 0));
+                        $this->xsum[] = array_fill(0, count($pglist[$i]['params']), 0);
                     } else {
-                        array_push($this->xsum[], []); // conserve memory
+                        $this->xsum[] = []; // conserve memory
                     }
                 }
             }
@@ -104,7 +104,7 @@ class Trainer
                 for ($j = 0; $j < $plen; $j++) {
                     $l2_decay_loss += $l2_decay * $p[$j] * $p[$j] / 2; // accumulate weight decay loss
                     $l1_decay_loss += $l1_decay * abs($p[$j]);
-                    $l1grad = $l1_decay * (($p[$j]>0)?1:-1);
+                    $l1grad = $l1_decay * ($p[$j] > 0 ? 1 : -1);
                     $l2grad = $l2_decay * ($p[$j]);
 
                     $gij = ($l2grad + $l1grad + $g[$j]) / $this->batch_size; // raw batch gradient
@@ -123,18 +123,18 @@ class Trainer
                     } else if ($this->method === 'adagrad') {
                         // adagrad update
                         $gsumi[$j] = $gsumi[j] + $gij * $gij;
-                        $dx = -1 * $this->learning_rate / sqrt($gsumi[$j] + $this->eps) * $gij;
+                        $dx = - $this->learning_rate / sqrt($gsumi[$j] + $this->eps) * $gij;
                         $p[$j] += $dx;
                     } else if ($this->method === 'windowgrad') {
                         // this is adagrad but with a moving window weighted average
                         // so the gradient is not accumulated over the entire history of the run.
                         // it's also referred to as Idea #1 in Zeiler paper on Adadelta. Seems reasonable to me!
                         $gsumi[$j] = $this->ro * $gsumi[$j] + (1 - $this->ro) * $gij * $gij;
-                        $dx = -1 * $this->learning_rate / sqrt($gsumi[$j] + $this->eps) * $gij; // eps added for better conditioning
+                        $dx = - $this->learning_rate / sqrt($gsumi[$j] + $this->eps) * $gij; // eps added for better conditioning
                         $p[$j] += $dx;
                     } else if ($this->method === 'adadelta') {
                         $gsumi[$j] = $this->ro * $gsumi[$j] + (1 - $this->ro) * $gij * $gij;
-                        $dx = -1 * sqrt(($xsumi[$j] + $this->eps) / ($gsumi[$j] + $this->eps)) * $gij;
+                        $dx = - sqrt(($xsumi[$j] + $this->eps) / ($gsumi[$j] + $this->eps)) * $gij;
                         $xsumi[$j] = $this->ro * $xsumi[$j] + (1 - $this->ro) * $dx * $dx; // yes, xsum lags behind gsum by 1.
                         $p[$j] += $dx;
                     } else if ($this->method === 'nesterov') {
