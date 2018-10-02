@@ -20,7 +20,7 @@ class ReluLayer extends Layer
         $this->in_act = $V;
         $V2 = $V->clone();
         $N = count($V->w);
-        $V2w = $V2->w;
+        $V2w = &$V2->w;
 
         for ($i = 0; $i < $N; $i++) {
             if ($V2w[$i] < 0) {

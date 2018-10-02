@@ -32,7 +32,7 @@ class Trainer
 
         $this->momentum = array_key_exists('momentum', $options) ? $options['momentum'] : 0.9;
         $this->ro = array_key_exists('ro', $options) ? $options['ro'] : 0.95; // used in adadelta
-        $this->eps = array_key_exists('eps', $options) ? $options['eps'] : 1e-8; // used in adam or adadelta
+        $this->eps = array_key_exists('eps', $options) ? $options['eps'] : 0.000001; // default with sgd,  1e-8 is used in adam or adadelta
         $this->beta1 = array_key_exists('beta1', $options) ? $options['beta1'] : 0.9; // used in adam
         $this->beta2 = array_key_exists('beta2', $options) ? $options['beta2'] : 0.999; // used in adam
 
