@@ -36,16 +36,16 @@ class Vol
             $this->w = array_fill(0, $n, 0);
             $this->dw = array_fill(0, $n, 0);
 
-            if ($c === null) {
+		    if ($c === null) {
                 // weight normalization is done to equalize the output
                 // variance of every neuron, otherwise neurons with a lot
                 // of incoming connections have outputs of larger variance
                 $scale = sqrt(1.0 / ($sx * $sy * $depth));
 
                 for ($i = 0; $i < $n; $i++) {
-                    $this->w[$i] = rand(0.0, $scale);
+                    $this->w[$i] = (rand()*$scale)/getrandmax();
                 }
-            } else {
+                    } else {
                 for ($i = 0; $i < $n; $i++) {
                     $this->w[$i] = $c;
                 }
