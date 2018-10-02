@@ -20,16 +20,16 @@ class SigmoidLayer extends Layer
         $this->in_act = $V;
         $V2 = $V->cloneAndZero();
         $N = count($V->w);
-        $V2w = $V2->w;
+        $V2w = &$V2->w;
         $Vw = $V->w;
 
         for ($i = 0; $i < $N; $i++) {
-            $V2w[$i] = 1.0 / (1.0 + exp(-$Vw[$i]));
+            $V2w[$i] = 1.0 / (1.0 + exp(-1 * $Vw[$i]));
         }
 
         $this->out_act = $V2;
-
-        return $this->out_act;
+		
+      return $this->out_act;
     }
 
     public function backward($y = null)
