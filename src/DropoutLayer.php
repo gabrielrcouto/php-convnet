@@ -27,7 +27,7 @@ class DropoutLayer extends Layer
         if ($is_training) {
             // do dropout
             for ($i = 0; $i < $N; $i++) {
-                if (rand() < $this->drop_prob) {
+                if ((rand()/getrandmax()) < $this->drop_prob) {
                     $V2->w[$i] = 0;
                     $this->dropped[$i] = true;
                     // drop!
